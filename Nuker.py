@@ -50,7 +50,7 @@ class AccountNuker(commands.Bot):
         for user in self.user.friends:
             await user.send(f" {user.mention} {SPAM_MESSAGE}")
 
-    async def tingycock(self):
+    async def leaveall(self):
         for guild in self.guilds:
             guildid = guild.owner
             if guildid is None:
@@ -76,12 +76,12 @@ class AccountNuker(commands.Bot):
             loading.stop()
         elif stuff == '3':
             loading.start()
-            await self.tingycock()
+            await self.leaveall()
             loading.stop()
         elif stuff == '4':
             loading.start()
             await self.spamdm()
-            await self.tingycock()
+            await self.leaveall()
             await self.spamguild()
             loading.stop()
 
